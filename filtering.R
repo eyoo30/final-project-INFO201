@@ -16,10 +16,12 @@ legal_restriction_rgn <- data %>%
 
 top_money_growth %>% data %>% 
   arrange(desc(ef_money_growth)) %>% 
+  select(countries) %>% 
   head(5)
 
-bottom_money_growth %>% data %>% 
-  arrange(ef_money_growth) %>% 
+top_money_growth %>% data %>% 
+  arrange(desc(ef_money_growth)) %>% 
+  select(countries) %>% 
   head(5)
 
 country_vs_hf <- data %>% 
