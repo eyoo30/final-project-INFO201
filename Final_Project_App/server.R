@@ -141,6 +141,7 @@ shinyServer(function(input, output) {
     
     summaryLegalRestrictions <- reactive({
         data %>%
+<<<<<<< HEAD
             filter(year %in% input$year_c) %>%
             filter(region %in% input$s_region) %>%
             arrange(desc(ef_legal)) %>%
@@ -152,4 +153,25 @@ shinyServer(function(input, output) {
             paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2])
         }
     )
+=======
+            filter(region %in% input$region) %>%
+            arrange(desc(ef_legal)) %>%
+            filter(row_number() == 1) %>% 
+            select(countries, ef_legal)
+    })
+    
+    output$legalRestrictionsText <- renderText({
+        if(input$variable == "Legal Restrictions") {
+            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1], "with a coefficient of ", summaryLegalRestrictions()[2])
+        }
+    })
+    
+    output$legalRestrictionsSummary <- renderText({
+        print("This tab displays a breakdown of how many legal restrictions a given 
+              country has in each region in a certain year. The widgets allow a user 
+              to choose a particular region and year; the histogram then shows all 
+              countries in that given region and the number of legal restrictions 
+              recorded in coefficient form.")
+    })
+>>>>>>> 672c5f2c0eca2dd5199d1cef608ab0819525c65a
 })
