@@ -13,6 +13,7 @@ library(dplyr)
 library(maps)
 library(ggplot2)
 library(shinythemes)
+library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = shinytheme("cosmo"),
