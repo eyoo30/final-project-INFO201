@@ -53,7 +53,8 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          uiOutput("year_widget")
                      ),
                      mainPanel(
-                         plotOutput("legal_plot")
+                         plotOutput("legal_plot"),
+                         textOutput("legalRestrictionsText")
                      )
                  )),
         selected = "Overview",

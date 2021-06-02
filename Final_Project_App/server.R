@@ -138,4 +138,18 @@ shinyServer(function(input, output) {
         plot_ly(plotly_data(), type='choropleth', locations=plotly_data()$ISO_code, z=plotly_data()$hf_rank, text=plotly_data()$countries, 
                 width = 1000, height = 1000 )
     })
+    
+    summaryLegalRestrictions <- reactive({
+        data %>%
+            filter(region %in% input$region) %>%
+            group_by(ef_legal) %>% 
+            mutate(maxLegal = max(ef_legal)) %>% 
+            filter(row_number() == 1)
+    })
+    
+    output$legalRestrictionsText <- renderText({
+        if(input$variable == "Legal Restrictions") {
+            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,7], "with a coefficient of ", summaryLegalRestrictions()[1,4])
+        }
+    })
 })
