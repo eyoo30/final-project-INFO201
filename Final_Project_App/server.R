@@ -146,7 +146,7 @@ shinyServer(function(input, output) {
     })
     
     output$legalRestrictionsText <- renderText({
-            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2], "and has an human freedom rank of", summaryLegalRestrictions()[1,3])
+            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2], "and the country has an human freedom rank of", summaryLegalRestrictions()[1,3])
         }
     )
     
@@ -187,6 +187,59 @@ shinyServer(function(input, output) {
     
     output$overview_group <- renderText({
       print("Aryaman Gala and Alexey Davydov")
+    })
+    
+    output$worldMapSummary <- renderText({
+      print("This tab displays a world map with each respective country’s human 
+            freedom index rank. The map allows the user to easily visualize where each 
+            country is and gain general information regarding the name of the country 
+            and its rank on the H.F. index. The widget allows the user to choose a certain 
+            year, thereby displaying how the rank of each country changed over time.")
+      })
+    
+    output$worldMap_analysis <- renderText({
+      print("The world map shows that throughout the years, Western Europe, North America, and 
+            Oceania consisently rank highly in the human freedom index rank, whilst countries 
+            in the Middle East and African consistently rank lower. Countries in Sourth America 
+            and Asia tend to be around the middle of the rankings with some variability.")
+    })
+    
+    output$religiousRestrictionsSummary <- renderText({
+      print("This tab displays the relationship between religious restrictions and 
+      the human freedom index rank. The scatterplot allows the user to see all countries’ 
+      values in these categories plotted with a line of best fit to easily discern 
+      the relationship. The widget allows users to choose a certain year, thereby 
+      allowing a given user to analyze the relationship between religious restrictions 
+      and the H.F. rank by year.")
+    })
+    
+    output$religious_analysis <- renderText({
+      print("The scatterplot displays that there is virtually no relationship between 
+            religious restrictions and the overall human freedom index rank. Interestingly 
+            enough, there is a slight positive relationship between religious restrictions 
+            and the overall rank, implying that less religious restricitons lead to 
+            less freedom. This shows that a singular variable does not affect the 
+            entire rank of a country, and warrants more analysis into other variables.")
+    })
+    
+    output$economicGrowthSummary <- renderText({
+      print("This tab displays the relationship between economic growth and years, 
+            in addition to some general information about countries in a particular 
+            region. The line plot displays the relationship of countries in a selected 
+            region and their economic growth and recorded years. A table under the 
+            plot displays general information from 2018 such as the exact economic 
+            growth level and the human freedom index rank. The widgets allow the 
+            user to select a region from which countries will be selected, and the 
+            number of countries the user wishes to have displayed which allows for 
+            more flexibility in analyzing trends.")
+    })
+    
+    output$economic_analysis <- renderText({
+      print("The line plot displays that overall there is a lot of variability from 
+            country to country, alebit economic growth is generally similar among 
+            countries in a particular region. Countries, for the most part, have grown 
+            economically as time went on. There is not any strong relationship between 
+            the the freedom index and economic growth in most countries.")
     })
 
 })

@@ -37,7 +37,13 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                      ),
                      mainPanel(
                          titlePanel(strong("World map showing Human Freedom Index by country")),
-                         plotlyOutput("world_map")
+                         plotlyOutput("world_map"),
+                         h3("Results"),
+                         textOutput(""),
+                         h3("Analysis"),
+                         textOutput("worldMap_analysis"),
+                         h3("Description"),
+                         textOutput("worldMapSummary")
                      )
                  )),
         tabPanel("Religious Restrictions",
@@ -47,7 +53,13 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                      ),
                      mainPanel(
                          titlePanel(strong("Impact of religious restrictions on the Human Freedom Rank of countries")),
-                         plotOutput("religious_plot")
+                         plotOutput("religious_plot"),
+                         h3("Results"),
+                         textOutput(""),
+                         h3("Analysis"),
+                         textOutput("religious_analysis"),
+                         h3("Description"),
+                         textOutput("religiousRestrictionsSummary")
                      )
                  )),
         tabPanel("Economic Growth",
@@ -59,7 +71,13 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                      mainPanel(
                          titlePanel(strong("Economic growth in countries")),
                          plotOutput("econ_plot"),
-                         tableOutput("econ_table")
+                         tableOutput("econ_table"),
+                         h3("Results"),
+                         textOutput(""),
+                         h3("Analysis"),
+                         textOutput("economic_analysis"),
+                         h3("Description"),
+                         textOutput("economicGrowthSummary")
                      )
                  )),
         tabPanel("Legal Restrictions",
