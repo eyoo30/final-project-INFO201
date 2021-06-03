@@ -244,12 +244,56 @@ shinyServer(function(input, output) {
     
     summaryEconomicGrowth <- reactive({
       data %>%
-        filter(year %in% input$year_c) %>%
+        filter(year == "2018") %>%
         filter(region %in% input$s_region) %>%
-        arrange(desc(ef_legal)) %>%
-        select(countries,ef_legal,hf_rank) %>%
+        arrange(desc(ef_money_growth)) %>%
+        select(countries, ef_money_growth, hf_rank) %>%
         filter(row_number() == 1)
     })
+    
+    output$economicGrowthText <- renderText({
+      paste("The highest economic growth in 2018 was in ", summaryEconomicGrowth()[1,1], "with a value of ", summaryEconomicGrowth()[1,2], "and the country has an human freedom rank of", summaryEconomicGrowth()[1,3])
+    }
+    )
+    
+    summaryReligiousRestrictions <- reactive({
+      data %>%
+        filter(year %in% input$year_c) %>% 
+        arrange(desc(pf_religion_restrictions)) %>%
+        select(countries, pf_religion_restrictions, hf_rank) %>%
+        filter(row_number() == 1)
+    })
+    
+    output$religiousRestrictionsText <- renderText({
+      paste("The country with the most religious restrictions was ", summaryReligiousRestrictions()[1,1], "with a value of ", summaryReligiousRestrictions()[1,2], "and the country has an human freedom rank of", summaryReligiousRestrictions()[1,3])
+    }
+    )
+    
+    output$economicGrowthText <- renderText({
+      paste("The highest economic growth in 2018 was in ", summaryEconomicGrowth()[1,1], "with a value of ", summaryEconomicGrowth()[1,2], "and the country has an human freedom rank of", summaryEconomicGrowth()[1,3])
+    }
+    )
+    
+    summaryWorldMapHI <- reactive({
+      data %>%
+        filter(year %in% input$year_c) %>% 
+        arrange(desc(hf_rank)) %>%
+        select(countries) %>%
+        filter(row_number() == 1)
+    })
+    
+    summaryWorldMapLO <- reactive({
+      data %>%
+        filter(year %in% input$year_c) %>% 
+        arrange(hf_rank) %>%
+        select(countries) %>%
+        filter(row_number() == 1)
+    })
+    
+    output$worldMapText <- renderText({
+      paste("The country with the highest rank was ", summaryWorldMapHI[1,1], " and the country with the lowest rank was ", summaryWorldMapLO[1,1])
+    }
+    )
 
 })
 
