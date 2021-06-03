@@ -146,9 +146,14 @@ shinyServer(function(input, output) {
     })
     
     output$legalRestrictionsText <- renderText({
+<<<<<<< HEAD
             paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2], "and has an human freedom rank of", summaryLegalRestrictions()[1,3])
         }
     )
+=======
+            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2])
+    })
+>>>>>>> d7afd252f880326cbbdc2f9f926a6d51210a7f97
     
     output$legalRestrictionsSummary <- renderText({
         print("This tab displays a breakdown of how many legal restrictions a given 
@@ -157,6 +162,7 @@ shinyServer(function(input, output) {
               countries in that given region and the number of legal restrictions 
               recorded in coefficient form.")
     })
+<<<<<<< HEAD
     
     output$legal_analysis <- renderText({
       print("The bar plot shows that, counterintuitive to our expectation, countries with greater legal restrictions have a higher human freedom rank.
@@ -190,4 +196,7 @@ shinyServer(function(input, output) {
     })
       
     })
+=======
+})
+>>>>>>> d7afd252f880326cbbdc2f9f926a6d51210a7f97
 
