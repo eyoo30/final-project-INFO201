@@ -241,6 +241,15 @@ shinyServer(function(input, output) {
             economically as time went on. There is not any strong relationship between 
             the the freedom index and economic growth in most countries.")
     })
+    
+    summaryEconomicGrowth <- reactive({
+      data %>%
+        filter(year %in% input$year_c) %>%
+        filter(region %in% input$s_region) %>%
+        arrange(desc(ef_legal)) %>%
+        select(countries,ef_legal,hf_rank) %>%
+        filter(row_number() == 1)
+    })
 
 })
 
