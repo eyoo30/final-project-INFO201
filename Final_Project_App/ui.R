@@ -33,16 +33,16 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
         tabPanel("World Map",
                  sidebarLayout(
                      sidebarPanel(
-                         uiOutput("year_plotly")
-                     ),
-                     mainPanel(
-                         titlePanel(strong("World map showing Human Freedom Index by country")),
-                         plotlyOutput("world_map"),
+                         uiOutput("year_plotly"),
                          h3("Results"),
                          h3("Analysis"),
                          textOutput("worldMap_analysis"),
                          h3("Description"),
                          textOutput("worldMapSummary")
+                     ),
+                     mainPanel(
+                         titlePanel(strong("World map showing Human Freedom Index by country")),
+                         plotlyOutput("world_map")
                      )
                  )),
         tabPanel("Religious Restrictions",
