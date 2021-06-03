@@ -35,10 +35,7 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                      sidebarPanel(
                          uiOutput("year_plotly"),
                          h3("Results"),
-<<<<<<< HEAD
-=======
                          textOutput("worldMapText"),
->>>>>>> db964952a38d0c24d6c3c9a20270b525b0414dbe
                          h3("Analysis"),
                          textOutput("worldMap_analysis"),
                          h3("Description"),
@@ -58,10 +55,7 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          titlePanel(strong("Impact of religious restrictions on the Human Freedom Rank of countries")),
                          plotOutput("religious_plot"),
                          h3("Results"),
-<<<<<<< HEAD
-=======
                          textOutput("religiousRestrictionsText"),
->>>>>>> db964952a38d0c24d6c3c9a20270b525b0414dbe
                          h3("Analysis"),
                          textOutput("religious_analysis"),
                          h3("Description"),
@@ -79,10 +73,7 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          plotOutput("econ_plot"),
                          tableOutput("econ_table"),
                          h3("Results"),
-<<<<<<< HEAD
-=======
                          textOutput("economicGrowthText"),
->>>>>>> db964952a38d0c24d6c3c9a20270b525b0414dbe
                          h3("Analysis"),
                          textOutput("economic_analysis"),
                          h3("Description"),
@@ -106,6 +97,19 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          textOutput("legalRestrictionsSummary")
                      )
                  )),
+        
+        tabPanel("Conclusions",
+                 sidebarLayout(
+                   sidebarPanel(
+                     titlePanel(strong("Summary of results")),
+                     h2("Interesting results"),
+                     textOutput("conclusion_result"),
+                     h2("Data description"),
+                     textOutput("conclusion_data")
+                   ),
+                   mainPanel(tableOutput("conclusion_table"))
+                 )
+                 ),
         selected = "Overview",
         fluid = TRUE)
      

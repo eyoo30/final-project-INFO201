@@ -75,7 +75,8 @@ shinyServer(function(input, output) {
             geom_col() +
             geom_text(aes(label = hf_rank), vjust = -0.2) +
             labs(x = "Countries",
-                 y = "Legal Restrictions") 
+                 y = "Legal Restrictions") +
+            theme(axis.text.x = element_text(angle = 45))
     })
     
     output$economic_widget <- renderUI({
@@ -110,9 +111,8 @@ shinyServer(function(input, output) {
             geom_line() +
             geom_point() +
             geom_text(aes(label = hf_rank), vjust = -0.2) +
-            labs(x = "Countries",
-                 y = "Money Growth") +
-            xlim(2008,2018)
+            labs(x = "Year",
+                 y = "Money Growth")
     })
     
     output$econ_table <- renderTable({
@@ -245,7 +245,7 @@ shinyServer(function(input, output) {
     summaryEconomicGrowth <- reactive({
       data %>%
         filter(year == "2018") %>%
-        filter(region %in% input$s_region) %>%
+        filter(region %in% input$sub_region) %>%
         arrange(desc(ef_money_growth)) %>%
         select(countries, ef_money_growth, hf_rank) %>%
         filter(row_number() == 1)
@@ -258,7 +258,7 @@ shinyServer(function(input, output) {
     
     summaryReligiousRestrictions <- reactive({
       data %>%
-        filter(year %in% input$year_c) %>% 
+        filter(year %in% input$year_2c) %>% 
         arrange(desc(pf_religion_restrictions)) %>%
         select(countries, pf_religion_restrictions, hf_rank) %>%
         filter(row_number() == 1)
@@ -276,7 +276,7 @@ shinyServer(function(input, output) {
     
     summaryWorldMapHI <- reactive({
       data %>%
-        filter(year %in% input$year_c) %>% 
+        filter(year %in% input$year_p) %>% 
         arrange(desc(hf_rank)) %>%
         select(countries) %>%
         filter(row_number() == 1)
@@ -284,16 +284,48 @@ shinyServer(function(input, output) {
     
     summaryWorldMapLO <- reactive({
       data %>%
-        filter(year %in% input$year_c) %>% 
+        filter(year %in% input$year_p) %>% 
         arrange(hf_rank) %>%
         select(countries) %>%
         filter(row_number() == 1)
     })
     
     output$worldMapText <- renderText({
-      paste("The country with the highest rank was ", summaryWorldMapHI[1,1], " and the country with the lowest rank was ", summaryWorldMapLO[1,1])
+      paste("In the year", input$year_p, ", the country with the lowest Human Freedom Index was ", summaryWorldMapHI()[1,1], " and the country with the highest Human Freedom Index was ", summaryWorldMapLO()[1,1])
     }
     )
+    
+    output$conclusion_result <- renderText({
+      paste("The results obtained from the various interactive figures provide us with informative insight into the 
+            trends and relationship of various factors to the Human Freedom index of countries. Some of the results
+            obtained are contrary to what we initially expected, particularly for the relationship of religious
+            restriction with the human freedom rank. While we epxected religious restrictions to have a significant 
+            impact on the human freedom index, the plot shows that there is no linear association between the religious 
+            restrictions in a country and its human freedom rank. 
+            
+            Nevertheless, this unexpected result conveys the 
+            larger message that the Human Freedom Index os determined by a multitude of factors and each weighs on it differently")
+      
+    })
+    
+    output$conclusion_data <- renderText({
+      print("The dataset provided information on numerous factors over 10 years which gave insight into several factors measured to determine 
+            the Human Freddom Index of a country. This enabled us to determine the direction of analysis and allowed us to select 
+            diverse factors that we wanted to investigate. Such a wide ranging dataset allowed us to perform a wholistic analysis 
+            and avoid creating bias in the results. However, the method of data collection and the implication of the data points 
+            were unclear. This made the some of the variable in the dataset difficult to interpret which consequently made it challenging to identify bias.
+            Nevertheless, the data is not harmful or offensive to any specific group or country")
+      
+    })
+    
+    conclusion_tab <- data %>%
+      filter(year == "2018") %>%
+      select(year,countries,region,pf_religion_restrictions,hf_rank) %>%
+      arrange(hf_rank)
+    
+    output$conclusion_table <- renderTable({
+      conclusion_tab
+    })
 
 })
 
