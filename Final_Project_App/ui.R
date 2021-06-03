@@ -17,13 +17,26 @@ library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = shinytheme("cosmo"),
-        tabPanel("Overview"),
+        tabPanel("Overview",
+                 titlePanel(strong("What is the Human Freedom Index?")),
+                 textOutput("overview_text"),
+                 h2(strong("What variables impact the Human Freedom Index")),
+                 h3("Religion"),
+                 textOutput("overview_religious"),
+                 h3("Economic"),
+                 textOutput("overview_economic"),
+                 h3("Legal"),
+                 textOutput("overview_legal"),
+                 h2(strong("Group Members")),
+                 textOutput("overview_group"),
+                 img(src = "freedom.png", height = 300, width = 500, align = "center")),
         tabPanel("World Map",
                  sidebarLayout(
                      sidebarPanel(
                          uiOutput("year_plotly")
                      ),
                      mainPanel(
+                         titlePanel(strong("World map showing Human Freedom Index by country")),
                          plotlyOutput("world_map")
                      )
                  )),
@@ -33,6 +46,7 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          uiOutput("religious_widget")
                      ),
                      mainPanel(
+                         titlePanel(strong("Impact of religious restrictions on the Human Freedom Rank of countries")),
                          plotOutput("religious_plot")
                      )
                  )),
@@ -43,6 +57,7 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          uiOutput("econ_num")
                      ),
                      mainPanel(
+                         titlePanel(strong("Economic growth in countries")),
                          plotOutput("econ_plot"),
                          tableOutput("econ_table")
                      )
@@ -54,8 +69,13 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                          uiOutput("year_widget")
                      ),
                      mainPanel(
+                         titlePanel(strong("Impact of legal restrictions on the Human Freedom Rank of countries")),
                          plotOutput("legal_plot"),
+                         h3("Results"),
                          textOutput("legalRestrictionsText"),
+                         h3("Analysis"),
+                         textOutput("legal_analysis"),
+                         h3("Description"),
                          textOutput("legalRestrictionsSummary")
                      )
                  )),

@@ -47,8 +47,7 @@ shinyServer(function(input, output) {
         ggplot(religious_data(),aes(hf_rank,pf_religion_restrictions)) +
             geom_point() +
             geom_smooth(method = "lm", se = FALSE) +
-            labs(title = "Impact of religious restrictions on the human freedom rank of countries",
-                 x = "Human Freedom Rank",
+            labs(x = "Human Freedom Rank",
                  y = "Religious Restrictions")
     })
     
@@ -75,8 +74,7 @@ shinyServer(function(input, output) {
         ggplot(legal_data(),aes(countries,ef_legal, fill = countries)) +
             geom_col() +
             geom_text(aes(label = hf_rank), vjust = -0.2) +
-            labs(title = "Impact of legal restrictions on the human freedom rank of countries",
-                 x = "Countries",
+            labs(x = "Countries",
                  y = "Legal Restrictions") 
     })
     
@@ -94,7 +92,7 @@ shinyServer(function(input, output) {
     
     economic_data <- reactive({
         data %>% 
-            select(year,countries,region,ef_money_growth,hf_rank) %>% 
+            select(countries,region,ef_money_growth,hf_rank) %>% 
             filter(region %in% input$sub_region) %>%
             distinct(countries,.keep_all = TRUE) %>%
             distinct(hf_rank,.keep_all = TRUE) %>%
@@ -112,8 +110,7 @@ shinyServer(function(input, output) {
             geom_line() +
             geom_point() +
             geom_text(aes(label = hf_rank), vjust = -0.2) +
-            labs(title = "Economic growth in countries",
-                 x = "Countries",
+            labs(x = "Countries",
                  y = "Money Growth") +
             xlim(2008,2018)
     })
@@ -141,30 +138,17 @@ shinyServer(function(input, output) {
     
     summaryLegalRestrictions <- reactive({
         data %>%
-<<<<<<< HEAD
             filter(year %in% input$year_c) %>%
             filter(region %in% input$s_region) %>%
             arrange(desc(ef_legal)) %>%
-            select(countries,ef_legal) %>%
+            select(countries,ef_legal,hf_rank) %>%
             filter(row_number() == 1)
     })
     
     output$legalRestrictionsText <- renderText({
-            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2])
+            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1,1], "with a value of ", summaryLegalRestrictions()[1,2], "and has an human freedom rank of", summaryLegalRestrictions()[1,3])
         }
     )
-=======
-            filter(region %in% input$region) %>%
-            arrange(desc(ef_legal)) %>%
-            filter(row_number() == 1) %>% 
-            select(countries, ef_legal)
-    })
-    
-    output$legalRestrictionsText <- renderText({
-        if(input$variable == "Legal Restrictions") {
-            paste("The most legal restrictions were in ", summaryLegalRestrictions()[1], "with a coefficient of ", summaryLegalRestrictions()[2])
-        }
-    })
     
     output$legalRestrictionsSummary <- renderText({
         print("This tab displays a breakdown of how many legal restrictions a given 
@@ -173,5 +157,37 @@ shinyServer(function(input, output) {
               countries in that given region and the number of legal restrictions 
               recorded in coefficient form.")
     })
->>>>>>> 672c5f2c0eca2dd5199d1cef608ab0819525c65a
-})
+    
+    output$legal_analysis <- renderText({
+      print("The bar plot shows that, counterintuitive to our expectation, countries with greater legal restrictions have a higher human freedom rank.
+            This infers that in countries that have a well-established legal system with defined restrictions in place, the populaton experiences greater freedom. 
+            In contrast, in countries with low levels of legal restrictions, the population is less free because other economic and social such as crime may be higher,
+            which results in a lower human freedom rank")
+    })
+    
+    output$overview_text <- renderText({
+      print("The Human Freedom index is a reasonably accurate indicator of overall freedom in the world. It is influenced by several social and economic factors such as economic growth, religious and legal restrictions, and crime. 
+            Therefore, understanding the relationship of the Human Freedom Index and the various factors can give us an insight into the degree of impact certain phenomena has on the degree of freedom experienced by people.")
+    })
+    
+    output$overview_religious <- renderText({
+      print("Religion is a foundational concept that is engrained in society and has a significant cultural impact. However, the integration and imposition of religious beliefs is varied across countries.
+            Therefore, we chose to see how the degree of religious restrictions imposed on the population affects the degree of freedom people enjoy.")
+    })
+      
+    output$overview_economic <- renderText({
+      print("Economic conditions of a country have significant impact on the population's well-being in the modern world. Economic factors determine the services and opportunities the population recieves,
+            which influences the lifestyle and prospertiy of the population in the county. Therefore, we wanted to explore how economic growth is associated with the degree of human freedom")
+    })
+    
+    output$overview_legal <- renderText({
+      print("Legal restrictions have a direct impact on the freedom the population enjoys as it defines the social andeconomic expectations that people have to abide by.
+            In the current political climate, we are seeing the impact the law can have on the population's welll-being. Therefore, we chose to investigate how the magnitude of legal resrictions impacts the freedom of people in a country")
+    })
+    
+    output$overview_group <- renderText({
+      print("Aryaman Gala and Alexey Davydov")
+    })
+      
+    })
+
