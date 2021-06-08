@@ -107,7 +107,8 @@ shinyUI(fluidPage(navbarPage("Human Freedom Index", collapsible = TRUE, theme = 
                      h2("Data description"),
                      textOutput("conclusion_data")
                    ),
-                   mainPanel(tableOutput("conclusion_table"))
+                   mainPanel(tableOutput("conclusion_table"),
+                             tableOutput("conclusion_table2"))
                  )
                  ),
         selected = "Overview",

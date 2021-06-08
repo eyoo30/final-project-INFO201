@@ -12,12 +12,15 @@ library(tidyverse)
 library(dplyr)
 library(maps)
 library(ggplot2)
+library(gghighlight)
 
-data <- read_csv("../hfi_cc_2020.csv")
+
+data <- read_csv("hfi_cc_2020.csv")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
+    #Code for widget to choose year for religious restrictions plot
     output$religious_widget <- renderUI({
         radioButtons("year_2c", label = "Choose Year",
                      choices = unique(data$year),
@@ -29,34 +32,30 @@ shinyServer(function(input, output) {
             select(year,countries,pf_religion_restrictions,hf_rank) %>%
             filter(year %in% input$year_2c)
     })
-    
-    output$point_widget <- renderUI({
-        sliderInput("points", label = "Chose human freedom ranks",
-                    min = 1,
-                    max = 10,
-                    selected = 10)
-    })
-    
-    highlight_point <- reactive({
-        data %>%
-            filter(year %in% religious_data()$year) %>%
-            filter(hf_rank <= input$points)
-    })
-
+  
+    #Code for religious restrictions vs human freedom rank
     output$religious_plot <- renderPlot({
-        ggplot(religious_data(),aes(hf_rank,pf_religion_restrictions)) +
-            geom_point() +
-            geom_smooth(method = "lm", se = FALSE) +
-            labs(x = "Human Freedom Rank",
-                 y = "Religious Restrictions")
+        ggplot(religious_data(),aes(hf_rank,pf_religion_restrictions, col = hf_rank >= 6)) +
+        geom_point() +
+        stat_smooth(method = "lm", col = "black") +
+        geom_text(
+          data= religious_data() %>% filter(hf_rank < 6),
+          nudge_x = 0.25, nudge_y = 0.25, 
+          aes(label=countries),
+          check_overlap = T
+        ) +
+        labs(x = "Human Freedom Rank",
+             y = "Religious Restrictions")
     })
     
+    #Code for widget to choose region for legal restrictions plot
     output$legal_widget <- renderUI({
         selectInput("s_region", label = "Choose region",
                      choices = unique(data$region),
                      selected = "Western Europe")
     })
     
+    #Code for widget to choose year for legal restrictions plot
     output$year_widget <- renderUI({
         radioButtons("year_c", label = "Choose Year",
                      choices = unique(data$year),
@@ -70,6 +69,7 @@ shinyServer(function(input, output) {
             filter(region %in% input$s_region)
     })
     
+    #Code for output plot for legal restrictions vs human freedom rank plot
     output$legal_plot <- renderPlot({
         ggplot(legal_data(),aes(countries,ef_legal, fill = countries)) +
             geom_col() +
@@ -79,12 +79,14 @@ shinyServer(function(input, output) {
             theme(axis.text.x = element_text(angle = 45))
     })
     
+    #Code for widget to choose region for economic plot
     output$economic_widget <- renderUI({
         selectInput("sub_region", label = "Choose region",
                     choices = unique(data$region),
                     selected = "South Asia")
     })
     
+    #Code for widget to choose number of countries for economic growth plot
     output$econ_num <- renderUI({
         sliderInput("num_countries", label = "Choose Number of countries",
                     min = 1, 
@@ -105,7 +107,8 @@ shinyServer(function(input, output) {
         data %>%
         filter(countries %in% economic_data()$countries, na.rm = TRUE)
     })
-        
+    
+    #Code for output plot for economic growth plot    
     output$econ_plot <- renderPlot({
         ggplot(money_data(),aes(year,ef_money_growth, col = countries)) +
             geom_line() +
@@ -115,10 +118,12 @@ shinyServer(function(input, output) {
                  y = "Money Growth")
     })
     
+    #Code for output table to show economic growth in chosen countries
     output$econ_table <- renderTable({
         economic_data()
     })
     
+    #Code for widget to choose year for world map
     output$year_plotly <- renderUI({
         radioButtons("year_p", label = "Choose Year",
                      choices = unique(data$year),
@@ -131,11 +136,13 @@ shinyServer(function(input, output) {
             filter(year %in% input$year_p)
     })
     
+    #Code for output of world map
     output$world_map <- renderPlotly({
         plot_ly(plotly_data(), type='choropleth', locations=plotly_data()$ISO_code, z=plotly_data()$hf_rank, text=plotly_data()$countries, 
                 width = 1000, height = 1000 )
     })
     
+    #Analysis and code for interactive summary text
     summaryLegalRestrictions <- reactive({
         data %>%
             filter(year %in% input$year_c) %>%
@@ -318,13 +325,29 @@ shinyServer(function(input, output) {
       
     })
     
+    #Code for conclusion tables
     conclusion_tab <- data %>%
       filter(year == "2018") %>%
       select(year,countries,region,pf_religion_restrictions,hf_rank) %>%
-      arrange(hf_rank)
+      arrange(hf_rank) %>%
+      rename("Human Freedom Rank" = hf_rank, "Religious Restriction" = pf_religion_restrictions) %>%
+      head(5)
     
     output$conclusion_table <- renderTable({
       conclusion_tab
+    })
+    
+    conclusion_tab2 <- data %>%
+      filter(year == "2018") %>%
+      select(year,countries,region,pf_religion_restrictions,hf_rank) %>%
+      arrange(desc(hf_rank)) %>%
+      head(5) %>%
+      arrange(hf_rank) %>%
+      rename("Human Freedom Rank" = hf_rank, "Religious Restriction" = pf_religion_restrictions)
+     
+    
+    output$conclusion_table2 <- renderTable({
+      conclusion_tab2
     })
 
 })
